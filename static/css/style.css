@@ -1,0 +1,183 @@
+/* ─── Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --primary: #1a56e8;
+  --primary-dark: #1340c0;
+  --warning: #f5a623;
+  --dark-bg: #0d1117;
+  --card-radius: 1rem;
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+body { font-family: var(--font-body); color: #333; }
+h1,h2,h3,h4,h5,h6,.fw-black { font-family: var(--font-main); }
+.fw-black { font-weight: 800 !important; }
+
+/* ─── Navbar ────────────────────────────────────────────────────────────── */
+#mainNav {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2744 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0.75rem 0;
+}
+.avatar-sm {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+}
+
+/* ─── Hero ──────────────────────────────────────────────────────────────── */
+.hero-section {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2744 60%, #0e3460 100%);
+  padding: 5rem 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(26,86,232,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.min-vh-75 { min-height: 75vh; }
+.hero-wave { margin-top: 3rem; }
+.badge-pill {
+  display: inline-flex; align-items: center;
+  background: rgba(245,166,35,0.15); color: var(--warning);
+  border: 1px solid rgba(245,166,35,0.3);
+  padding: 0.5rem 1.2rem; border-radius: 2rem;
+  font-size: 0.875rem; font-weight: 600;
+}
+.search-bar-hero .form-control {
+  border-radius: 0.75rem; border: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 0.85rem 1.2rem;
+}
+.hero-stats-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1.5rem; padding: 2rem;
+}
+.stat-box {
+  background: rgba(255,255,255,0.08);
+  border-radius: 1rem; padding: 1.5rem 1rem;
+  text-align: center;
+}
+.stat-number { font-size: 2rem; font-weight: 800; color: #fff; }
+.stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+
+/* ─── Section ───────────────────────────────────────────────────────────── */
+.section-title {
+  font-weight: 800; font-size: 1.75rem; color: #0d1117;
+}
+
+/* ─── Category Cards ────────────────────────────────────────────────────── */
+.category-icon {
+  font-size: 2rem; display: block;
+  background: linear-gradient(135deg, var(--primary), #6c5ce7);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.category-hover { transition: all 0.2s ease; cursor: pointer; }
+.category-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(26,86,232,0.15) !important;
+  border-color: var(--primary) !important;
+}
+
+/* ─── Job Cards ─────────────────────────────────────────────────────────── */
+.job-card { transition: all 0.2s ease; border-radius: var(--card-radius); }
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12) !important;
+}
+.job-list-card { transition: all 0.2s ease; }
+.job-list-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important; }
+.job-title-link:hover { color: var(--primary) !important; }
+.job-type-badge {
+  background: rgba(26,86,232,0.1); color: var(--primary);
+  font-size: 0.7rem; padding: 0.3rem 0.7rem; border-radius: 2rem;
+}
+.job-type-badge-sm {
+  background: rgba(26,86,232,0.1); color: var(--primary);
+  font-size: 0.65rem; border-radius: 2rem;
+}
+.job-meta { font-size: 0.8rem; color: #666; }
+.job-detail-meta { font-size: 0.875rem; color: #555; }
+.job-overview-list li { padding: 0.4rem 0; font-size: 0.9rem; }
+
+/* ─── Company Logos ─────────────────────────────────────────────────────── */
+.company-logo-sm, .company-logo-md, .company-logo-lg {
+  border-radius: 0.75rem; object-fit: cover;
+  border: 1px solid #e9ecef;
+}
+.company-logo-sm { width: 48px; height: 48px; }
+.company-logo-md { width: 56px; height: 56px; }
+.company-logo-lg { width: 80px; height: 80px; }
+.company-logo-placeholder, .company-logo-md-placeholder, .company-logo-lg-placeholder {
+  border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--primary), #6c5ce7);
+  color: #fff; font-weight: 800; font-family: var(--font-main);
+}
+.company-logo-placeholder { width: 48px; height: 48px; font-size: 1.2rem; }
+.company-logo-md-placeholder { width: 56px; height: 56px; font-size: 1.4rem; }
+.company-logo-lg-placeholder { width: 80px; height: 80px; font-size: 2rem; }
+
+/* ─── How It Works ──────────────────────────────────────────────────────── */
+.how-card { border-radius: 1rem; }
+.how-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #6c5ce7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: #fff;
+}
+
+/* ─── CTA Section ───────────────────────────────────────────────────────── */
+.cta-section {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2744 100%);
+}
+
+/* ─── Auth Pages ────────────────────────────────────────────────────────── */
+.auth-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(26,86,232,0.1); display: flex;
+  align-items: center; justify-content: center; font-size: 1.75rem;
+}
+.register-choice-card {
+  border-radius: 1.5rem !important;
+  transition: all 0.2s ease;
+  border-color: #e9ecef !important;
+}
+.register-choice-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary) !important;
+  box-shadow: 0 12px 30px rgba(26,86,232,0.12) !important;
+}
+.choice-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(26,86,232,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: var(--primary);
+}
+
+/* ─── Page Header ───────────────────────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2744 100%);
+}
+
+/* ─── Dashboard Stats ───────────────────────────────────────────────────── */
+.stat-card .stat-val { font-size: 2rem; font-weight: 800; }
+.stat-card .stat-lbl { font-size: 0.8rem; opacity: 0.85; }
+.stat-card .stat-icon { font-size: 2.5rem; opacity: 0.4; }
+.btn-xs { padding: 0.2rem 0.5rem; font-size: 0.75rem; }
+
+/* ─── Footer ────────────────────────────────────────────────────────────── */
+.footer-dark { background: #0d1117; }
+.footer-link { color: #6c757d; text-decoration: none; display: block; margin-bottom: 0.4rem; }
+.footer-link:hover { color: var(--warning); }
+
+/* ─── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-section { padding: 3rem 0 0; }
+  .display-4 { font-size: 2rem; }
+}

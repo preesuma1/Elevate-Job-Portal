@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Register as {{ role }} - Elevate WS{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <div class="text-center mb-4">
+          <div class="auth-icon mx-auto mb-3">
+            {% if role == 'Company' %}<i class="bi bi-building text-warning"></i>
+            {% else %}<i class="bi bi-person-badge text-primary"></i>{% endif %}
+          </div>
+          <h3 class="fw-black">Register as {{ role }}</h3>
+          <p class="text-muted small">Fill in the details below to get started</p>
+        </div>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mt-3">
+            Create Account
+          </button>
+        </form>
+        <p class="text-center text-muted small mt-3 mb-0">
+          Already have an account? <a href="{% url 'accounts:login' %}">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Browse Jobs - Elevate WS{% endblock %}
+{% block content %}
+<div class="page-header py-4 mb-4">
+  <div class="container">
+    <h2 class="fw-black text-white mb-1">Browse Jobs</h2>
+    <p class="text-white-50 mb-0">{{ total_jobs }} jobs found</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <!-- FILTER BAR -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+      <form method="GET" class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label small fw-semibold">Keyword</label>
+          <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Job title or company...">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label small fw-semibold">Category</label>
+          <select name="category" class="form-select">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label small fw-semibold">Job Type</label>
+          <select name="job_type" class="form-select">
+            <option value="">All Types</option>
+            {% for value, label in job_types %}
+            <option value="{{ value }}" {% if selected_job_type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label small fw-semibold">Location</label>
+          <input type="text" name="location" value="{{ location }}" class="form-control" placeholder="City...">
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+          <button type="submit" class="btn btn-primary flex-grow-1">
+            <i class="bi bi-search me-1"></i>Search
+          </button>
+          <a href="{% url 'jobs:job_list' %}" class="btn btn-outline-secondary" title="Clear">
+            <i class="bi bi-x-lg"></i>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JOB CARDS -->
+  {% for job in page_obj %}
+  <div class="card job-list-card border-0 shadow-sm mb-3 rounded-4">
+    <div class="card-body p-4">
+      <div class="row align-items-center g-3">
+        <div class="col-auto">
+          {% if job.company.company_logo %}
+            <img src="{{ job.company.company_logo.url }}" class="company-logo-md" alt="logo">
+          {% else %}
+            <div class="company-logo-md-placeholder">{{ job.company.company_name|first }}</div>
+          {% endif %}
+        </div>
+        <div class="col">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+            <h5 class="fw-bold mb-0">
+              <a href="{% url 'jobs:job_detail' job.slug %}" class="text-dark text-decoration-none job-title-link">{{ job.title }}</a>
+            </h5>
+            <span class="badge job-type-badge-sm">{{ job.get_job_type_display }}</span>
+          </div>
+          <p class="text-muted mb-2 small">{{ job.company.company_name }}</p>
+          <div class="d-flex flex-wrap gap-3">
+            <span class="job-meta"><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</span>
+            <span class="job-meta"><i class="bi bi-cash me-1"></i>{{ job.salary_display }}</span>
+            <span class="job-meta"><i class="bi bi-briefcase me-1"></i>{{ job.get_experience_level_display }}</span>
+            <span class="job-meta"><i class="bi bi-calendar me-1"></i>Deadline: {{ job.deadline|date:"M d, Y" }}</span>
+          </div>
+        </div>
+        <div class="col-auto text-end">
+          <a href="{% url 'jobs:job_detail' job.slug %}" class="btn btn-primary">
+            Apply Now <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+          <div class="text-muted small mt-1">{{ job.views_count }} views</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="text-center py-5">
+    <i class="bi bi-search display-3 text-muted"></i>
+    <h5 class="mt-3 text-muted">No jobs found matching your criteria</h5>
+    <a href="{% url 'jobs:job_list' %}" class="btn btn-primary mt-2">Clear Filters</a>
+  </div>
+  {% endfor %}
+
+  <!-- PAGINATION -->
+  {% if page_obj.has_other_pages %}
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}&category={{ selected_category }}&job_type={{ selected_job_type }}&location={{ location }}">
+          <i class="bi bi-chevron-left"></i> Previous
+        </a>
+      </li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}&q={{ query }}&category={{ selected_category }}&job_type={{ selected_job_type }}&location={{ location }}">{{ num }}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}&category={{ selected_category }}&job_type={{ selected_job_type }}&location={{ location }}">
+          Next <i class="bi bi-chevron-right"></i>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

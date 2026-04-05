@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}{{ job.title }} - Elevate WS{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <!-- JOB HEADER -->
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex gap-4 align-items-start">
+            {% if job.company.company_logo %}
+              <img src="{{ job.company.company_logo.url }}" class="company-logo-lg" alt="logo">
+            {% else %}
+              <div class="company-logo-lg-placeholder">{{ job.company.company_name|first }}</div>
+            {% endif %}
+            <div class="flex-grow-1">
+              <h2 class="fw-black mb-1">{{ job.title }}</h2>
+              <p class="text-muted mb-3">{{ job.company.company_name }}</p>
+              <div class="d-flex flex-wrap gap-3">
+                <span class="job-detail-meta"><i class="bi bi-geo-alt me-1 text-primary"></i>{{ job.location }}</span>
+                <span class="job-detail-meta"><i class="bi bi-cash me-1 text-primary"></i>{{ job.salary_display }}</span>
+                <span class="job-detail-meta"><i class="bi bi-clock me-1 text-primary"></i>{{ job.get_job_type_display }}</span>
+                <span class="job-detail-meta"><i class="bi bi-star me-1 text-primary"></i>{{ job.get_experience_level_display }}</span>
+                <span class="job-detail-meta {% if job.deadline < today %}text-danger{% endif %}">
+                  <i class="bi bi-calendar me-1 text-primary"></i>Deadline: {{ job.deadline|date:"F d, Y" }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Job Description</h5>
+          <div class="job-content">{{ job.description|linebreaks }}</div>
+          {% if job.responsibilities %}
+          <h5 class="fw-bold mt-4 mb-3">Responsibilities</h5>
+          <div class="job-content">{{ job.responsibilities|linebreaks }}</div>
+          {% endif %}
+          <h5 class="fw-bold mt-4 mb-3">Requirements</h5>
+          <div class="job-content">{{ job.requirements|linebreaks }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 mb-4 sticky-top" style="top: 80px;">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3">Apply for this Job</h5>
+          {% if user.is_authenticated and user.is_jobseeker %}
+            {% if has_applied %}
+              <div class="alert alert-success">
+                <i class="bi bi-check-circle me-2"></i>You've already applied!
+              </div>
+            {% else %}
+              <a href="{% url 'jobs:apply_job' job.slug %}" class="btn btn-primary w-100 btn-lg">
+                <i class="bi bi-send me-2"></i>Apply Now
+              </a>
+            {% endif %}
+          {% elif user.is_authenticated %}
+            <p class="text-muted small">Only job seekers can apply for jobs.</p>
+          {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary w-100 mb-2">Login to Apply</a>
+            <a href="{% url 'accounts:register_jobseeker' %}" class="btn btn-outline-primary w-100">Create Account</a>
+          {% endif %}
+
+          <hr class="my-4">
+          <h6 class="fw-bold mb-3">Job Overview</h6>
+          <ul class="list-unstyled job-overview-list">
+            <li><i class="bi bi-building me-2 text-primary"></i>{{ job.company.company_name }}</li>
+            <li><i class="bi bi-geo-alt me-2 text-primary"></i>{{ job.location }}</li>
+            <li><i class="bi bi-briefcase me-2 text-primary"></i>{{ job.get_job_type_display }}</li>
+            <li><i class="bi bi-bar-chart me-2 text-primary"></i>{{ job.get_experience_level_display }}</li>
+            {% if job.category %}
+            <li><i class="bi bi-tag me-2 text-primary"></i>{{ job.category.name }}</li>
+            {% endif %}
+            <li><i class="bi bi-eye me-2 text-primary"></i>{{ job.views_count }} views</li>
+            <li><i class="bi bi-clock-history me-2 text-primary"></i>Posted {{ job.created_at|timesince }} ago</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

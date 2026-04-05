@@ -15,8 +15,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.shortcuts import render
+
+
+def home(request):
+    from jobs.models import Job, Category
+    featured_jobs = Job.objects.filter(status='active').order_by('-created_at')[:6]
+    categories = Category.objects.all()
+    total_jobs = Job.objects.filter(status='active').count()
+    return render(request, 'home.html', {
+        'featured_jobs': featured_jobs,
+        'categories': categories,
+        'total_jobs': total_jobs,
+    })
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home, name='home'),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('jobs/', include('jobs.urls', namespace='jobs')),
+    path('dashboard/', include('dashboard.urls', namespace='dashboard')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
